@@ -1,7 +1,13 @@
+import { useParams } from "react-router-dom";
+
+import DocumentsModule from "@/components/documents/module/DocumentsModule";
+
 export default function DepartmentDocuments() {
+  const { department } = useParams();
+
   return (
-    <div className="rounded-xl border p-6">
-      Department Documents
-    </div>
+    <DocumentsModule
+      department={department?.toUpperCase()}
+    />
   );
 }

@@ -8,6 +8,11 @@ import Documents from "@/pages/Documents";
 import Achievements from "@/pages/Achievements";
 import Departments from "@/pages/Departments";
 import Login from "@/pages/Login";
+import DepartmentOverview from "@/components/departments/overview/DepartmentOverview";
+import DepartmentDocuments from "@/components/departments/documents/DepartmentDocuments";
+import DepartmentAchievements from "@/components/departments/achievements/DepartmentAchievements";
+import DepartmentFaculty from "@/components/departments/faculty/DepartmentFaculty";
+import DepartmentAnalytics from "@/components/departments/analytics/DepartmentAnalytics";
 
 export default function AppRouter() {
   return (
@@ -29,7 +34,37 @@ export default function AppRouter() {
     <Route
   path="/department/:department"
   element={<DepartmentDashboard />}
-/>
+>
+  <Route
+    index
+    element={<Navigate to="overview" replace />}
+  />
+
+  <Route
+    path="overview"
+    element={<DepartmentOverview />}
+  />
+
+  <Route
+    path="documents"
+    element={<DepartmentDocuments />}
+  />
+
+  <Route
+    path="achievements"
+    element={<DepartmentAchievements />}
+  />
+
+  <Route
+    path="faculty"
+    element={<DepartmentFaculty />}
+  />
+
+  <Route
+    path="analytics"
+    element={<DepartmentAnalytics />}
+  />
+</Route>
 </Route>
 
         <Route
