@@ -4,7 +4,7 @@ import Sidebar from "./Sidebar";
 
 export default function AppLayout() {
   return (
-    <div className="flex h-screen bg-slate-100">
+    <div className="flex h-screen bg-background text-foreground">
       <Sidebar />
 
       <div className="flex flex-1 flex-col">
@@ -16,4 +16,4 @@ export default function AppLayout() {
       </div>
     </div>
   );
-}
+} 

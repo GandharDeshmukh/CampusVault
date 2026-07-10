@@ -1,14 +1,22 @@
+import WelcomeBanner from "@/components/dashboard/WelcomeBanner";
+import StatsGrid from "@/components/dashboard/StatsGrid";
+import RecentDocuments from "@/components/dashboard/RecentDocuments";
+import RecentAchievements from "@/components/dashboard/RecentAchievements";
+import DashboardCharts from "@/components/dashboard/DashboardCharts";
+
 export default function Dashboard() {
   return (
     <div className="space-y-8">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight">
-          Dashboard
-        </h1>
+      <WelcomeBanner />
 
-        <p className="text-muted-foreground mt-2">
-          Welcome to CampusVault
-        </p>
+      <StatsGrid />
+
+      <DashboardCharts />
+
+      <div className="grid gap-8 xl:grid-cols-2">
+        <RecentDocuments />
+
+        <RecentAchievements />
       </div>
     </div>
   );
