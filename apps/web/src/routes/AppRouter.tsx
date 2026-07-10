@@ -1,0 +1,31 @@
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+
+import AppLayout from "@/components/layout/AppLayout";
+
+import Dashboard from "@/pages/Dashboard";
+import Documents from "@/pages/Documents";
+import Achievements from "@/pages/Achievements";
+import Departments from "@/pages/Departments";
+import Login from "@/pages/Login";
+
+export default function AppRouter() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Login />} />
+
+        <Route element={<AppLayout />}>
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/documents" element={<Documents />} />
+          <Route path="/achievements" element={<Achievements />} />
+          <Route path="/departments" element={<Departments />} />
+        </Route>
+
+        <Route
+          path="*"
+          element={<Navigate to="/dashboard" replace />}
+        />
+      </Routes>
+    </BrowserRouter>
+  );
+}
