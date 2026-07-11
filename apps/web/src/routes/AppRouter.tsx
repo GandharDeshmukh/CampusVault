@@ -11,8 +11,9 @@ import Login from "@/pages/Login";
 import DepartmentOverview from "@/components/departments/overview/DepartmentOverview";
 import DepartmentDocuments from "@/components/departments/documents/DepartmentDocuments";
 import DepartmentAchievements from "@/components/departments/achievements/DepartmentAchievements";
-import DepartmentFaculty from "@/components/departments/faculty/DepartmentFaculty";
+import DepartmentFaculty from "@/components/faculty/DepartmentFaculty";
 import DepartmentAnalytics from "@/components/departments/analytics/DepartmentAnalytics";
+import Faculty from "@/pages/Faculty";
 
 export default function AppRouter() {
   return (
@@ -31,6 +32,10 @@ export default function AppRouter() {
     <Route path="/documents" element={<Documents />} />
     <Route path="/achievements" element={<Achievements />} />
     <Route path="/departments" element={<Departments />} />
+    <Route
+  path="/faculty"
+  element={<Faculty />}
+/>
     <Route
   path="/department/:department"
   element={<DepartmentDashboard />}

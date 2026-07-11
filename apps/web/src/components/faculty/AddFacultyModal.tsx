@@ -10,14 +10,14 @@ import {
 
 
 
-import UploadAchievementDialog from "./UploadAchievementDialog";
+import AddFacultyDialog from "./AddFacultyDialog";
 
 interface Props {
   department?: string;
   onUploadSuccess: () => void;
 }
 
-export default function UploadAchievementModal({
+export default function AddFacultyModal({
   department,
   onUploadSuccess,
 }: Props) {
@@ -29,17 +29,17 @@ export default function UploadAchievementModal({
       onOpenChange={setOpen}
     >
       <DialogTrigger className="inline-flex h-8 items-center justify-center rounded-lg bg-primary px-4 text-sm font-medium text-primary-foreground hover:bg-primary/90">
-  + Add Achievement
+  + Add Faculty
 </DialogTrigger>
 
       <DialogContent className="max-w-2xl">
         <DialogHeader>
           <DialogTitle>
-            Add Achievement
+            Add Faculty
           </DialogTitle>
         </DialogHeader>
 
-        <UploadAchievementDialog
+        <AddFacultyDialog
           department={department}
           onUploadSuccess={() => {
             onUploadSuccess();

@@ -1,26 +1,35 @@
+import { useEffect, useState } from "react";
+
 import { Card } from "@workspace/ui/components/card";
 import { FileText } from "lucide-react";
 
-const documents = [
-  {
-    name: "NAAC_Report_2026.pdf",
-    department: "IQAC",
-  },
-  {
-    name: "NBA_Criteria_3.pdf",
-    department: "Computer",
-  },
-  {
-    name: "Research_Publications.xlsx",
-    department: "ECE",
-  },
-  {
-    name: "Placement_Statistics.pdf",
-    department: "Training & Placement",
-  },
-];
+import { getRecentDocuments } from "@/services/recent.service";
+
+interface Document {
+  id: string;
+  title: string;
+  department: string;
+  created_at: string;
+}
 
 export default function RecentDocuments() {
+  const [documents, setDocuments] = useState<Document[]>([]);
+
+  useEffect(() => {
+    loadDocuments();
+  }, []);
+
+  async function loadDocuments() {
+    const { data, error } = await getRecentDocuments();
+
+    if (error) {
+      console.error(error);
+      return;
+    }
+
+    setDocuments(data ?? []);
+  }
+
   return (
     <Card className="rounded-2xl p-6 shadow-md">
       <div className="mb-5 flex items-center justify-between">
@@ -31,24 +40,34 @@ export default function RecentDocuments() {
         <FileText className="text-blue-600" />
       </div>
 
-      <div className="space-y-4">
-        {documents.map((doc) => (
-          <div
-            key={doc.name}
-            className="flex items-center justify-between rounded-xl bg-slate-50 p-4 transition hover:bg-slate-100"
-          >
-            <div>
-              <p className="font-medium">
-                {doc.name}
-              </p>
+      {documents.length === 0 ? (
+        <div className="py-10 text-center text-muted-foreground">
+          No documents uploaded yet.
+        </div>
+      ) : (
+        <div className="space-y-4">
+          {documents.map((doc) => (
+            <div
+              key={doc.id}
+              className="flex items-center justify-between rounded-xl bg-slate-50 p-4 transition hover:bg-slate-100 dark:bg-muted dark:hover:bg-muted/70"
+            >
+              <div>
+                <p className="font-medium">
+                  {doc.title}
+                </p>
 
-              <p className="text-sm text-slate-500">
-                {doc.department}
-              </p>
+                <p className="text-sm text-slate-500">
+                  {doc.department}
+                </p>
+              </div>
+
+              <div className="text-xs text-muted-foreground">
+                {new Date(doc.created_at).toLocaleDateString()}
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </Card>
   );
 }

@@ -1,7 +1,13 @@
+import { useParams } from "react-router-dom";
+
+import AchievementsModule from "@/components/achievements/AchievementsModule";
+
 export default function DepartmentAchievements() {
+  const { department } = useParams();
+
   return (
-    <div className="rounded-xl border p-6">
-      Department Achievements
-    </div>
+    <AchievementsModule
+      department={department}
+    />
   );
 }
