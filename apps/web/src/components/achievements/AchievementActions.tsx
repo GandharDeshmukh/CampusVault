@@ -7,16 +7,16 @@ import { toast } from "sonner";
 import FilePreviewDialog from "@/components/common/FilePreviewDialog";
 import DeleteConfirmationDialog from "@/components/common/DeleteConfirmationDialog";
 
-import type { Document } from "@/types/document";
-import { deleteDocument } from "@/services/document.service";
+import type { Achievement } from "@/types/achievement";
+import { deleteAchievement } from "@/services/achievement.service";
 
 interface Props {
-  document: Document;
+  achievement: Achievement;
   onDeleted: () => void;
 }
 
-export default function DocumentActions({
-  document: doc,
+export default function AchievementActions({
+  achievement,
   onDeleted,
 }: Props) {
   const [previewOpen, setPreviewOpen] = useState(false);
@@ -24,9 +24,9 @@ export default function DocumentActions({
 
   async function handleDelete() {
     try {
-      await deleteDocument(doc);
+      await deleteAchievement(achievement);
 
-      toast.success("Document deleted successfully.");
+      toast.success("Achievement deleted successfully.");
 
       setDeleteOpen(false);
 
@@ -34,13 +34,15 @@ export default function DocumentActions({
     } catch (error) {
       console.error(error);
 
-      toast.error("Failed to delete document.");
+      toast.error("Failed to delete achievement.");
     }
   }
 
   async function handleDownload() {
     try {
-      const response = await fetch(doc.file_url);
+      const response = await fetch(
+        achievement.certificate_url
+      );
 
       const blob = await response.blob();
 
@@ -50,7 +52,8 @@ export default function DocumentActions({
 
       link.href = url;
       link.download =
-        doc.file_name || "document.pdf";
+        achievement.certificate_name ||
+        "certificate.pdf";
 
       document.body.appendChild(link);
 
@@ -64,7 +67,7 @@ export default function DocumentActions({
     } catch (error) {
       console.error(error);
 
-      toast.error("Failed to download document.");
+      toast.error("Failed to download certificate.");
     }
   }
 
@@ -99,15 +102,15 @@ export default function DocumentActions({
       <FilePreviewDialog
         open={previewOpen}
         onOpenChange={setPreviewOpen}
-        title={document.title}
-        fileUrl={doc.file_url}
+        title={achievement.title}
+        fileUrl={achievement.certificate_url}
       />
 
       <DeleteConfirmationDialog
         open={deleteOpen}
         onOpenChange={setDeleteOpen}
-        title="Delete Document"
-        description={`Are you sure you want to delete "${document.title}"? This action cannot be undone.`}
+        title="Delete Achievement"
+        description={`Are you sure you want to delete "${achievement.title}"? This action cannot be undone.`}
         onConfirm={handleDelete}
       />
     </>

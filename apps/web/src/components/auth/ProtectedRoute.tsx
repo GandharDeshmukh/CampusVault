@@ -12,11 +12,17 @@ export default function ProtectedRoute({
 
   if (loading) {
     return (
-      <div className="flex h-screen items-center justify-center">
-        <div className="text-lg font-medium">
-          Loading...
-        </div>
-      </div>
+      <div className="flex h-screen flex-col items-center justify-center bg-background">
+  <h1 className="text-4xl font-bold">
+    CampusVault
+  </h1>
+
+  <p className="mt-3 text-muted-foreground">
+    Loading...
+  </p>
+
+  <div className="mt-6 h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+</div>
     );
   }
 
