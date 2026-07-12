@@ -14,6 +14,7 @@ import DepartmentAchievements from "@/components/departments/achievements/Depart
 import DepartmentFaculty from "@/components/faculty/DepartmentFaculty";
 import DepartmentAnalytics from "@/components/departments/analytics/DepartmentAnalytics";
 import Faculty from "@/pages/Faculty";
+import AchievementDetails from "@/pages/AchievementDetails";
 
 export default function AppRouter() {
   return (
@@ -35,6 +36,10 @@ export default function AppRouter() {
     <Route
   path="/faculty"
   element={<Faculty />}
+/>
+<Route
+  path="/achievements/:id"
+  element={<AchievementDetails />}
 />
     <Route
   path="/department/:department"

@@ -12,6 +12,14 @@ interface DepartmentCardProps {
   activities: number;
 }
 
+const slugMap: Record<string, string> = {
+  CE: "ce",
+  IT: "it",
+  "E&CE": "ece",
+  ENTC: "entc",
+  "AI&DS": "aids",
+};
+
 export default function DepartmentCard({
   name,
   shortName,
@@ -23,11 +31,17 @@ export default function DepartmentCard({
 }: DepartmentCardProps) {
   const navigate = useNavigate();
 
+  function handleClick() {
+    const slug =
+      slugMap[shortName] ??
+      shortName.toLowerCase().replace(/[^a-z0-9]/g, "");
+
+    navigate(`/department/${slug}`);
+  }
+
   return (
     <Card
-      onClick={() =>
-        navigate(`/department/${shortName.toLowerCase()}`)
-      }
+      onClick={handleClick}
       className="group cursor-pointer overflow-hidden rounded-3xl border-0 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
     >
       <div

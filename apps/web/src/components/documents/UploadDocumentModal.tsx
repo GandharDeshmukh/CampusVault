@@ -31,7 +31,7 @@ export default function UploadDocumentModal({
   + Upload Document
 </DialogTrigger>
 
-      <DialogContent className="max-w-xl">
+      <DialogContent className="sm:max-w-2xl">
         <DialogHeader>
           <DialogTitle>
             Upload Document

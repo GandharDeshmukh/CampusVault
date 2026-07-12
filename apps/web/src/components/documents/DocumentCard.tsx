@@ -1,5 +1,5 @@
 import { FileText } from "lucide-react";
-
+import { getDepartmentShortName } from "@/utils/departments";
 import StatusBadge from "@/components/common/StatusBadge";
 import DocumentActions from "./DocumentActions";
 
@@ -31,7 +31,9 @@ export default function DocumentCard({
 
             <div className="mt-3 flex gap-2">
               <StatusBadge value={document.category} />
-              <StatusBadge value={document.department} />
+              <StatusBadge
+  value={getDepartmentShortName(document.department)}
+/>
             </div>
 
             <p className="mt-3 text-sm text-muted-foreground">

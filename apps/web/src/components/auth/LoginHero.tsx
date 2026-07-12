@@ -2,8 +2,8 @@ import {
   ShieldCheck,
   FileText,
   Trophy,
-  Building2,
 } from "lucide-react";
+import logo from "@/assets/logo.png";
 
 export default function LoginHero() {
   return (
@@ -13,18 +13,22 @@ export default function LoginHero() {
 
         <div className="mb-10 flex items-center gap-4">
 
-          <div className="rounded-2xl bg-blue-600 p-4">
-            <Building2 size={34} />
-          </div>
+          <div className="rounded-2xl bg-white p-2 shadow-lg">
+  <img
+    src={logo}
+    alt="CampusVault"
+    className="h-16 w-16 object-contain"
+  />
+</div>
 
           <div>
-            <h1 className="text-5xl font-bold">
-              CampusVault
-            </h1>
+            <h1 className="text-5xl font-extrabold tracking-wide">
+  CampusVault
+</h1>
 
-            <p className="mt-1 text-slate-400">
-              Digital Accreditation Portal
-            </p>
+            <p className="mt-2 text-lg text-slate-300">
+  Digital Accreditation Portal
+</p>
           </div>
 
         </div>

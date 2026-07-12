@@ -10,6 +10,7 @@ import {
   Users,
   Settings,
   type LucideIcon,
+  GraduationCap,
 } from "lucide-react";
 
 export interface NavigationItem {
@@ -39,6 +40,11 @@ export const navigationItems: NavigationItem[] = [
     path: "/achievements",
     icon: Trophy,
   },
+  {
+  title: "Faculty",
+  path: "/faculty",
+  icon: GraduationCap,
+},
   {
     title: "Departments",
     path: "/departments",

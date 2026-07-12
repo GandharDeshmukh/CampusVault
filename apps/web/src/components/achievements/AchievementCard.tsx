@@ -1,7 +1,7 @@
 import { Trophy } from "lucide-react";
 
 import type { Achievement } from "@/types/achievement";
-
+import { useNavigate } from "react-router-dom";
 import AchievementActions from "./AchievementActions";
 
 interface Props {
@@ -13,6 +13,7 @@ export default function AchievementCard({
   achievement,
   onDeleted,
 }: Props) {
+  const navigate = useNavigate();
   function getBadgeColor() {
     const position = achievement.position.toLowerCase();
 
@@ -37,10 +38,15 @@ export default function AchievementCard({
     return "bg-blue-100 text-blue-700";
   }
 
-  return (
-    <div className="rounded-xl border bg-background p-5 transition-all hover:shadow-lg">
+ return (
+  <div className="rounded-xl border bg-background p-5 transition-all hover:shadow-lg">
       <div className="flex items-start justify-between">
-        <div className="flex gap-4">
+        <div
+  className="flex cursor-pointer gap-4"
+  onClick={() => {
+  navigate(`/achievements/${achievement.id}`);
+}}
+>
           <div className="rounded-full bg-yellow-100 p-3">
             <Trophy className="h-7 w-7 text-yellow-600" />
           </div>

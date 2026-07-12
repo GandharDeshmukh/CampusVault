@@ -18,6 +18,20 @@ export async function getAchievements(
   return await query;
 }
 
+export async function getAchievementById(id: string) {
+  const { data, error } = await supabase
+    .from("achievements")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+  if (error) {
+    throw error;
+  }
+
+  return data;
+}
+
 export async function uploadAchievement(
   file: File,
   data: Omit<

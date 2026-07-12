@@ -73,11 +73,17 @@ export default function AchievementActions({
 
   return (
     <>
-      <div className="flex items-center gap-1">
+      <div
+  className="flex items-center gap-1"
+  onClick={(e) => e.stopPropagation()}
+>
         <Button
           variant="ghost"
           size="icon"
-          onClick={() => setPreviewOpen(true)}
+          onClick={(e) => {
+  e.stopPropagation();
+  setPreviewOpen(true);
+}}
         >
           <Eye className="h-4 w-4" />
         </Button>
@@ -85,7 +91,10 @@ export default function AchievementActions({
         <Button
           variant="ghost"
           size="icon"
-          onClick={handleDownload}
+          onClick={(e) => {
+  e.stopPropagation();
+  handleDownload();
+}}
         >
           <Download className="h-4 w-4" />
         </Button>
@@ -93,7 +102,10 @@ export default function AchievementActions({
         <Button
           variant="ghost"
           size="icon"
-          onClick={() => setDeleteOpen(true)}
+          onClick={(e) => {
+  e.stopPropagation();
+  setDeleteOpen(true);
+}}
         >
           <Trash2 className="h-4 w-4 text-red-500" />
         </Button>
