@@ -1,12 +1,10 @@
 import {
   LayoutDashboard,
   FolderOpen,
-  Upload,
   Trophy,
   Building2,
   BarChart3,
   FileText,
-  Bell,
   Users,
   Settings,
   type LucideIcon,
@@ -26,25 +24,20 @@ export const navigationItems: NavigationItem[] = [
     icon: LayoutDashboard,
   },
   {
-    title: "Documents",
-    path: "/documents",
-    icon: FolderOpen,
-  },
-  {
-    title: "Upload Document",
-    path: "/upload",
-    icon: Upload,
-  },
+  title: "NBA Accreditation",
+  path: "/documents",
+  icon: FolderOpen,
+},
   {
     title: "Achievements",
     path: "/achievements",
     icon: Trophy,
   },
   {
-  title: "Faculty",
-  path: "/faculty",
-  icon: GraduationCap,
-},
+    title: "Faculty",
+    path: "/faculty",
+    icon: GraduationCap,
+  },
   {
     title: "Departments",
     path: "/departments",
@@ -59,11 +52,6 @@ export const navigationItems: NavigationItem[] = [
     title: "Reports",
     path: "/reports",
     icon: FileText,
-  },
-  {
-    title: "Notifications",
-    path: "/notifications",
-    icon: Bell,
   },
   {
     title: "Users",

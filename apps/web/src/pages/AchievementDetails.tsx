@@ -8,6 +8,9 @@ import {
   Building2,
   Calendar,
   MapPin,
+  ExternalLink,
+  FileText,
+  GraduationCap,
 } from "lucide-react";
 
 import { getAchievementById } from "@/services/achievement.service";
@@ -110,6 +113,99 @@ export default function AchievementDetails() {
         </div>
 
       </div>
+            {/* Description */}
+
+      {achievement.description && (
+        <div className="rounded-xl border bg-background p-6">
+          <h2 className="mb-4 text-xl font-semibold">
+            Description
+          </h2>
+
+          <p className="leading-7 text-muted-foreground">
+            {achievement.description}
+          </p>
+        </div>
+      )}
+
+      {/* Faculty Guide */}
+
+      {achievement.faculty_guide && (
+        <div className="rounded-xl border bg-background p-6">
+          <div className="flex items-center gap-3">
+            <GraduationCap className="h-6 w-6 text-primary" />
+
+            <div>
+              <h2 className="font-semibold">
+                Faculty Guide
+              </h2>
+
+              <p className="text-muted-foreground">
+                {achievement.faculty_guide}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Achievement Images */}
+
+      {achievement.image_urls &&
+        achievement.image_urls.length > 0 && (
+          <div className="rounded-xl border bg-background p-6">
+            <h2 className="mb-4 text-xl font-semibold">
+              Achievement Images
+            </h2>
+
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+              {achievement.image_urls.map((image) => (
+                <img
+                  key={image}
+                  src={image}
+                  alt="Achievement"
+                  className="h-56 w-full rounded-lg object-cover transition hover:scale-[1.02]"
+                />
+              ))}
+            </div>
+          </div>
+        )}
+              {/* Resources */}
+
+      {(achievement.certificate_url ||
+        achievement.external_link) && (
+        <div className="rounded-xl border bg-background p-6">
+          <h2 className="mb-4 text-xl font-semibold">
+            Resources
+          </h2>
+
+          <div className="flex flex-wrap gap-4">
+
+            {achievement.certificate_url && (
+              <a
+                href={achievement.certificate_url}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-2 rounded-lg border px-4 py-2 transition hover:bg-muted"
+              >
+                <FileText className="h-5 w-5" />
+                View Certificate
+              </a>
+            )}
+
+            {achievement.external_link && (
+              <a
+                href={achievement.external_link}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-2 rounded-lg border px-4 py-2 transition hover:bg-muted"
+              >
+                <ExternalLink className="h-5 w-5" />
+                External Link
+              </a>
+            )}
+
+          </div>
+        </div>
+      )}
 
       {/* Information Card */}
 
@@ -186,9 +282,11 @@ export default function AchievementDetails() {
               </p>
 
               <p className="font-medium">
-                {new Date(
-                  achievement.created_at
-                ).toLocaleDateString()}
+                {achievement.achievement_date
+  ? new Date(
+      achievement.achievement_date
+    ).toLocaleDateString()
+  : "-"}
               </p>
 
             </div>

@@ -40,9 +40,14 @@ export default function AchievementActions({
 
   async function handleDownload() {
     try {
-      const response = await fetch(
-        achievement.certificate_url
-      );
+      if (!achievement.certificate_url) {
+  toast.error("Certificate not available.");
+  return;
+}
+
+const response = await fetch(
+  achievement.certificate_url
+);
 
       const blob = await response.blob();
 
@@ -51,9 +56,9 @@ export default function AchievementActions({
       const link = document.createElement("a");
 
       link.href = url;
-      link.download =
-        achievement.certificate_name ||
-        "certificate.pdf";
+     link.download =
+  achievement.certificate_name ??
+  "certificate.pdf";
 
       document.body.appendChild(link);
 
@@ -115,7 +120,7 @@ export default function AchievementActions({
         open={previewOpen}
         onOpenChange={setPreviewOpen}
         title={achievement.title}
-        fileUrl={achievement.certificate_url}
+        fileUrl={achievement.certificate_url ?? ""}
       />
 
       <DeleteConfirmationDialog

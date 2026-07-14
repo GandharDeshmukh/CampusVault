@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+
 import {
   BarChart,
   Bar,
@@ -10,16 +12,26 @@ import {
 
 import { Card } from "@workspace/ui/components/card";
 
-const data = [
-  { month: "Jan", achievements: 12 },
-  { month: "Feb", achievements: 18 },
-  { month: "Mar", achievements: 22 },
-  { month: "Apr", achievements: 17 },
-  { month: "May", achievements: 30 },
-  { month: "Jun", achievements: 25 },
-];
+import { getMonthlyAchievements } from "@/services/dashboardAnalytics.service";
 
 export default function DashboardCharts() {
+  const [data, setData] = useState<
+    { month: string; achievements: number }[]
+  >([]);
+
+  useEffect(() => {
+    async function load() {
+      try {
+        const result = await getMonthlyAchievements();
+        setData(result);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    load();
+  }, []);
+
   return (
     <Card className="rounded-2xl p-6 shadow-md">
       <h2 className="mb-6 text-xl font-semibold">
@@ -27,7 +39,10 @@ export default function DashboardCharts() {
       </h2>
 
       <div className="h-80">
-        <ResponsiveContainer width="100%" height="100%">
+        <ResponsiveContainer
+          width="100%"
+          height="100%"
+        >
           <BarChart data={data}>
             <CartesianGrid strokeDasharray="3 3" />
 

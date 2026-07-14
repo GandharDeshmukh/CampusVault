@@ -12,12 +12,12 @@ export default function DepartmentLayout() {
   };
 
   const tabs = [
-    { name: "Overview", path: "overview" },
-    { name: "Documents", path: "documents" },
-    { name: "Achievements", path: "achievements" },
-    { name: "Faculty", path: "faculty" },
-    { name: "Analytics", path: "analytics" },
-  ];
+  { name: "Overview", path: "overview" },
+  { name: "NBA Accreditation", path: "documents" },
+  { name: "Achievements", path: "achievements" },
+  { name: "Faculty", path: "faculty" },
+  { name: "Analytics", path: "analytics" },
+];
 
   return (
     <div className="space-y-8">

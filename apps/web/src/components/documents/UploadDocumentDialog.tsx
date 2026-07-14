@@ -22,6 +22,7 @@ interface Props {
   department?: string;
   onUploadSuccess: () => void;
 }
+
 const categories = [
   "Accreditation",
   "Syllabus",
@@ -44,6 +45,7 @@ interface Department {
   id: string;
   name: string;
 }
+
 export default function UploadDocumentDialog({
   department,
   onUploadSuccess,
@@ -52,46 +54,48 @@ export default function UploadDocumentDialog({
 
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState<string | null>(null);
-const [academicYear, setAcademicYear] = useState<string | null>(null);
+  const [academicYear, setAcademicYear] = useState<string | null>(null);
 
-const [departmentId, setDepartmentId] = useState(
-  department ?? ""
-);
+  const [departmentId, setDepartmentId] = useState(
+    department ?? ""
+  );
 
-const [departments, setDepartments] = useState<
-  Department[]
->([]);
+  const [departments, setDepartments] = useState<
+    Department[]
+  >([]);
+
   const [file, setFile] = useState<File | null>(null);
+
   useEffect(() => {
-  loadDepartments();
-}, []);
+    loadDepartments();
+  }, []);
 
-async function loadDepartments() {
-  const { data, error } =
-    await getDepartments();
+  async function loadDepartments() {
+    const { data, error } =
+      await getDepartments();
 
-  if (error) {
-    console.error(error);
-    return;
+    if (error) {
+      console.error(error);
+      return;
+    }
+
+    setDepartments(data ?? []);
   }
-
-  setDepartments(data ?? []);
-}
 
   async function handleUpload() {
     if (
-  !title ||
-  !category ||
-  !academicYear ||
-  !departmentId ||
-  !file
-) {
+      !title ||
+      !category ||
+      !academicYear ||
+      !departmentId ||
+      !file
+    ) {
       toast.warning("Please fill all required fields.");
       return;
     }
 
     if (!user) {
-     toast.error("Please login first.");
+      toast.error("Please login first.");
       return;
     }
 
@@ -100,12 +104,12 @@ async function loadDepartments() {
         title,
         description: "",
         category,
-       department: departmentId,
+        department: departmentId,
         uploaded_by: user.id,
         file_name: "",
       });
 
-     toast.success("Document uploaded successfully!");
+      toast.success("Document uploaded successfully!");
 
       setTitle("");
       setCategory("");
@@ -116,7 +120,7 @@ async function loadDepartments() {
       onUploadSuccess();
     } catch (error) {
       console.error(error);
-     toast.error("Failed to upload document.");
+      toast.error("Failed to upload document.");
     }
   }
 
@@ -136,107 +140,109 @@ async function loadDepartments() {
       </div>
 
       <div className="space-y-2 w-full">
-  <Label>Category</Label>
+        <Label>Category</Label>
 
-  <Select
-    value={category}
-    onValueChange={setCategory}
-  >
-    <SelectTrigger className="w-full">
-      <SelectValue placeholder="Select Category" />
-    </SelectTrigger>
-
-    <SelectContent>
-      {categories.map((item) => (
-        <SelectItem
-          key={item}
-          value={item}
+        <Select
+          value={category}
+          onValueChange={setCategory}
         >
-          {item}
-        </SelectItem>
-      ))}
-    </SelectContent>
-  </Select>
-</div>
-<div className="space-y-2 w-full">
-  <Label>Department</Label>
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="Select Category" />
+          </SelectTrigger>
 
-  <Select
-    value={departmentId}
-    onValueChange={(v: string | null) => setDepartmentId(v ?? "")}
-    disabled={!!department}
-  >
-    <SelectTrigger className="w-full">
-      <SelectValue placeholder="Select Department" />
-    </SelectTrigger>
+          <SelectContent>
+            {categories.map((item) => (
+              <SelectItem
+                key={item}
+                value={item}
+              >
+                {item}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
 
-    <SelectContent>
-      {departments.map((dept) => (
-        <SelectItem
-  key={dept.id}
-  value={dept.name}
->
-  {dept.name}
-</SelectItem>
-      ))}
-    </SelectContent>
-  </Select>
-</div>
-<div className="space-y-2 w-full">
-  <Label>Academic Year</Label>
+      <div className="space-y-2 w-full">
+        <Label>Department</Label>
 
-  <Select
-    value={academicYear}
-    onValueChange={setAcademicYear}
-  >
-    <SelectTrigger className="w-full">
-      <SelectValue placeholder="Select Academic Year" />
-    </SelectTrigger>
-
-    <SelectContent>
-      {academicYears.map((year) => (
-        <SelectItem
-          key={year}
-          value={year}
+        <Select
+          value={departmentId}
+          onValueChange={(v: string | null) =>
+            setDepartmentId(v ?? "")
+          }
+          disabled={!!department}
         >
-          {year}
-        </SelectItem>
-      ))}
-    </SelectContent>
-  </Select>
-</div>
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="Select Department" />
+          </SelectTrigger>
+
+          <SelectContent>
+            {departments.map((dept) => (
+              <SelectItem
+                key={dept.id}
+                value={dept.name}
+              >
+                {dept.name}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+
+      <div className="space-y-2 w-full">
+        <Label>Academic Year</Label>
+
+        <Select
+          value={academicYear}
+          onValueChange={setAcademicYear}
+        >
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="Select Academic Year" />
+          </SelectTrigger>
+
+          <SelectContent>
+            {academicYears.map((year) => (
+              <SelectItem
+                key={year}
+                value={year}
+              >
+                {year}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
 
       <div className="space-y-2">
-  <Label>Choose File</Label>
+        <Label>Choose File</Label>
 
-  <Input
-    type="file"
-    onChange={(e) =>
-      setFile(e.target.files?.[0] ?? null)
-    }
-  />
+        <Input
+          type="file"
+          onChange={(e) =>
+            setFile(e.target.files?.[0] ?? null)
+          }
+        />
 
-  {file && (
-    <p className="text-sm text-muted-foreground">
-      📄 {file.name}
-    </p>
-  )}
-</div>
+        {file && (
+          <p className="text-sm text-muted-foreground">
+            📄 {file.name}
+          </p>
+        )}
+      </div>
 
       <div className="flex justify-end gap-3 pt-2">
-  <Button
-    variant="outline"
-    type="button"
-  >
-    Cancel
-  </Button>
+        <Button
+          variant="outline"
+          type="button"
+        >
+          Cancel
+        </Button>
 
-  <Button
-    onClick={handleUpload}
-  >
-    Upload Document
-  </Button>
-</div>
+        <Button onClick={handleUpload}>
+          Upload Document
+        </Button>
+      </div>
     </div>
   );
 }

@@ -32,7 +32,7 @@ export default function UploadAchievementModal({
   + Add Achievement
 </DialogTrigger>
 
-      <DialogContent className="max-w-2xl">
+      <DialogContent className="sm:max-w-3xl">
         <DialogHeader>
           <DialogTitle>
             Add Achievement

@@ -1,9 +1,11 @@
 export interface Achievement {
   id: string;
 
+  student_name: string;
+
   title: string;
 
-  student_name: string;
+  description: string | null;
 
   department: string;
 
@@ -11,17 +13,17 @@ export interface Achievement {
 
   position: string;
 
+  certificate_name: string | null;
+
+  certificate_url: string | null;
+
+  uploaded_by: string | null;
+
   created_at: string;
-
-  // New fields
-
-  description: string | null;
 
   faculty_guide: string | null;
 
   achievement_date: string | null;
-
-  certificate_url: string | null;
 
   image_urls: string[] | null;
 
