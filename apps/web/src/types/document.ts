@@ -4,12 +4,16 @@ export interface Document {
   description: string;
   file_name: string;
   file_url: string;
+
   category: string;
   department: string;
 
   // NBA
   criterion: number | null;
   subcategory: string | null;
+
+  // Academic
+  academic_year: string | null;
 
   uploaded_by: string;
   created_at: string;

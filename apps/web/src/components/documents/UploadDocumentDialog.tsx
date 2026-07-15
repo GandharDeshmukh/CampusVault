@@ -113,9 +113,10 @@ export default function UploadDocumentDialog({
   category,
   department: departmentId,
 
-  // NBA
   criterion: criterion ?? null,
   subcategory: subcategory ?? null,
+
+  academic_year: academicYear,
 
   uploaded_by: user.id,
   file_name: "",
@@ -126,7 +127,7 @@ export default function UploadDocumentDialog({
       setTitle("");
       setCategory("");
       setAcademicYear(null);
-      setDepartmentId("");
+      setDepartmentId(department ?? "");
       setFile(null);
 
       onUploadSuccess();

@@ -33,7 +33,9 @@ export async function searchDocuments(search: string) {
     .from("documents")
     .select("*")
     .ilike("title", `%${search}%`)
-    .order("created_at", { ascending: false });
+    .order("created_at", {
+      ascending: false,
+    });
 }
 
 export async function uploadDocument(
@@ -42,6 +44,7 @@ export async function uploadDocument(
 ) {
   const filePath = `${Date.now()}-${file.name}`;
 
+  // Upload file to Storage
   const { error: uploadError } = await supabase.storage
     .from("documents")
     .upload(filePath, file);
@@ -50,11 +53,13 @@ export async function uploadDocument(
     throw uploadError;
   }
 
+  // Get public URL
   const { data: urlData } = supabase.storage
     .from("documents")
     .getPublicUrl(filePath);
 
-  return await supabase
+  // Save document metadata
+  const { data: insertedDocument, error } = await supabase
     .from("documents")
     .insert({
       ...data,
@@ -63,6 +68,12 @@ export async function uploadDocument(
     })
     .select()
     .single();
+
+  if (error) {
+    throw error;
+  }
+
+  return insertedDocument;
 }
 
 export async function deleteDocument(document: Document) {
