@@ -15,6 +15,7 @@ import DepartmentFaculty from "@/components/faculty/DepartmentFaculty";
 import DepartmentAnalytics from "@/components/departments/analytics/DepartmentAnalytics";
 import Faculty from "@/pages/Faculty";
 import AchievementDetails from "@/pages/AchievementDetails";
+import CriterionDetails from "@/pages/CriterionDetails";
 
 export default function AppRouter() {
   return (
@@ -59,7 +60,10 @@ export default function AppRouter() {
     path="documents"
     element={<DepartmentDocuments />}
   />
-
+  <Route
+  path="documents/criterion/:criterionId"
+  element={<CriterionDetails />}
+/>
   <Route
     path="achievements"
     element={<DepartmentAchievements />}

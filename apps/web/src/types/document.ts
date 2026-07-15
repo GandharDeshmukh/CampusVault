@@ -6,6 +6,11 @@ export interface Document {
   file_url: string;
   category: string;
   department: string;
+
+  // NBA
+  criterion: number | null;
+  subcategory: string | null;
+
   uploaded_by: string;
   created_at: string;
 }

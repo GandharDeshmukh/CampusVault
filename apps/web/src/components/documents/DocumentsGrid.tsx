@@ -9,21 +9,37 @@ interface Props {
   refreshKey: number;
   search: string;
   department?: string;
+
+  // NBA
+  criterion?: number;
+  subcategory?: string;
 }
 
 export default function DocumentsGrid({
   refreshKey,
   search,
   department,
+  criterion,
+  subcategory,
 }: Props) {
   const [documents, setDocuments] = useState<Document[]>([]);
 
   useEffect(() => {
     loadDocuments();
-  }, [refreshKey, department, search]);
+  }, [
+    refreshKey,
+    department,
+    criterion,
+    subcategory,
+    search,
+  ]);
 
   async function loadDocuments() {
-    const { data, error } = await getDocuments(department);
+    const { data, error } = await getDocuments(
+      department,
+      criterion,
+      subcategory
+    );
 
     if (error) {
       console.error(error);
@@ -36,7 +52,9 @@ export default function DocumentsGrid({
     }
 
     const filtered = data.filter((doc) =>
-      doc.title.toLowerCase().includes(search.toLowerCase())
+      doc.title
+        .toLowerCase()
+        .includes(search.toLowerCase())
     );
 
     setDocuments(filtered);

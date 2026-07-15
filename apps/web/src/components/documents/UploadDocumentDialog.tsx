@@ -20,6 +20,11 @@ import { useAuth } from "@/contexts/AuthContext";
 
 interface Props {
   department?: string;
+
+  // NBA
+  criterion?: number;
+  subcategory?: string;
+
   onUploadSuccess: () => void;
 }
 
@@ -48,6 +53,8 @@ interface Department {
 
 export default function UploadDocumentDialog({
   department,
+  criterion,
+  subcategory,
   onUploadSuccess,
 }: Props) {
   const { user } = useAuth();
@@ -101,13 +108,18 @@ export default function UploadDocumentDialog({
 
     try {
       await uploadDocument(file, {
-        title,
-        description: "",
-        category,
-        department: departmentId,
-        uploaded_by: user.id,
-        file_name: "",
-      });
+  title,
+  description: "",
+  category,
+  department: departmentId,
+
+  // NBA
+  criterion: criterion ?? null,
+  subcategory: subcategory ?? null,
+
+  uploaded_by: user.id,
+  file_name: "",
+});
 
       toast.success("Document uploaded successfully!");
 

@@ -1,5 +1,14 @@
-import NbaCriteriaModule from "@/components/nba/NbaCriteriaModule";
+import { useParams } from "react-router-dom";
+
+import CriterionAccordion from "@/components/nba/CriterionAccordion";
+import { getDepartmentName } from "@/utils/departments";
 
 export default function DepartmentDocuments() {
-  return <NbaCriteriaModule />;
+  const { department } = useParams();
+
+  return (
+    <CriterionAccordion
+      department={getDepartmentName(department)}
+    />
+  );
 }

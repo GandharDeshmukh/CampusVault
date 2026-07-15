@@ -2,7 +2,9 @@ import { supabase } from "@/lib/supabase";
 import type { Document } from "@/types/document";
 
 export async function getDocuments(
-  department?: string
+  department?: string,
+  criterion?: number,
+  subcategory?: string
 ) {
   let query = supabase
     .from("documents")
@@ -13,6 +15,14 @@ export async function getDocuments(
 
   if (department) {
     query = query.eq("department", department);
+  }
+
+  if (criterion !== undefined && criterion !== null) {
+    query = query.eq("criterion", criterion);
+  }
+
+  if (subcategory) {
+    query = query.eq("subcategory", subcategory);
   }
 
   return await query;

@@ -8,18 +8,24 @@ import {
   DialogTrigger,
 } from "@workspace/ui/components/dialog";
 
-
 import UploadDocumentDialog from "./UploadDocumentDialog";
 
 interface Props {
   department?: string;
+
+  // NBA
+  criterion?: number;
+  subcategory?: string;
+
   onUploadSuccess: () => void;
 }
 
 export default function UploadDocumentModal({
   department,
+  criterion,
+  subcategory,
   onUploadSuccess,
-}: Props) { 
+}: Props) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -28,8 +34,8 @@ export default function UploadDocumentModal({
       onOpenChange={setOpen}
     >
       <DialogTrigger className="inline-flex h-8 items-center justify-center rounded-lg bg-primary px-4 text-sm font-medium text-primary-foreground hover:bg-primary/90">
-  + Upload Document
-</DialogTrigger>
+        + Upload Document
+      </DialogTrigger>
 
       <DialogContent className="sm:max-w-2xl">
         <DialogHeader>
@@ -39,12 +45,14 @@ export default function UploadDocumentModal({
         </DialogHeader>
 
         <UploadDocumentDialog
-  department={department}
-  onUploadSuccess={() => {
-    onUploadSuccess();
-    setOpen(false);
-  }}
-/>
+          department={department}
+          criterion={criterion}
+          subcategory={subcategory}
+          onUploadSuccess={() => {
+            onUploadSuccess();
+            setOpen(false);
+          }}
+        />
       </DialogContent>
     </Dialog>
   );
