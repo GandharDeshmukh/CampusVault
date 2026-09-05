@@ -9,6 +9,7 @@ import {
   Settings,
   type LucideIcon,
   GraduationCap,
+  CalendarDays,
 } from "lucide-react";
 
 export interface NavigationItem {
@@ -33,6 +34,11 @@ export const navigationItems: NavigationItem[] = [
     path: "/achievements",
     icon: Trophy,
   },
+  {
+  title: "Academic Calendar",
+  path: "/academic-calendar",
+  icon: CalendarDays,
+},
   {
     title: "Faculty",
     path: "/faculty",
