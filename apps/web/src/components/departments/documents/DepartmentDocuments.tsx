@@ -1,14 +1,5 @@
-import { useParams } from "react-router-dom";
-
-import CriterionAccordion from "@/components/nba/CriterionAccordion";
-import { getDepartmentName } from "@/utils/departments";
+import CriterionGrid from "@/components/nba/CriterionGrid";
 
 export default function DepartmentDocuments() {
-  const { department } = useParams();
-
-  return (
-    <CriterionAccordion
-      department={getDepartmentName(department)}
-    />
-  );
+  return <CriterionGrid />;
 }

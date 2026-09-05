@@ -16,7 +16,7 @@ export default function AchievementsModule({
 
   function refreshAchievements() {
     setRefreshKey((prev) => prev + 1);
-  }
+  } 
 
   return (
     <div className="space-y-6">

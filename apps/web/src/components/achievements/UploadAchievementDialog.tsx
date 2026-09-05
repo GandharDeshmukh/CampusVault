@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Button } from "@workspace/ui/components/button";
 import { Input } from "@workspace/ui/components/input";
@@ -6,8 +6,9 @@ import { Label } from "@workspace/ui/components/label";
 
 import { toast } from "sonner";
 
-import { uploadAchievement } from "@/services/achievement.service";
 import { useAuth } from "@/contexts/AuthContext";
+import { uploadAchievement } from "@/services/achievement.service";
+import { departments } from "@/utils/departments";
 
 interface Props {
   department?: string;
@@ -44,50 +45,115 @@ export default function UploadAchievementDialog({
   const [externalLink, setExternalLink] =
     useState("");
 
+  const [selectedDepartment, setSelectedDepartment] =
+    useState(department ?? "");
+
   const [file, setFile] =
     useState<File | null>(null);
 
   const [images, setImages] =
     useState<File[]>([]);
 
+  useEffect(() => {
+    setSelectedDepartment(department ?? "");
+  }, [department]);
+
   async function handleUpload() {
-    if (
-      !studentName ||
-      !title ||
-      !event ||
-      !position ||
-      !achievementDate ||
-      !description ||
-      !file
-    ) {
+    const finalDepartment =
+      department ?? selectedDepartment;
+
+    if (!studentName.trim()) {
       toast.warning(
-        "Please fill all required fields."
+        "Please enter the student name."
+      );
+      return;
+    }
+
+    if (!title.trim()) {
+      toast.warning(
+        "Please enter the achievement title."
+      );
+      return;
+    }
+
+    if (!event.trim()) {
+      toast.warning(
+        "Please enter the event."
+      );
+      return;
+    }
+
+    if (!position.trim()) {
+      toast.warning(
+        "Please enter the position."
+      );
+      return;
+    }
+
+    if (!achievementDate) {
+      toast.warning(
+        "Please select the achievement date."
+      );
+      return;
+    }
+
+    if (!finalDepartment) {
+      toast.warning(
+        "Please select a department."
+      );
+      return;
+    }
+
+    if (!file) {
+      toast.warning(
+        "Please upload the certificate."
       );
       return;
     }
 
     if (!user) {
-      toast.error("Please login first.");
+      toast.error(
+        "Please login first."
+      );
       return;
     }
 
     try {
       await uploadAchievement(
-  file,
-  images,
-  {
-    student_name: studentName,
-    title,
-    description: description || null,
-    department: department ?? "",
-    event,
-    position,
-    uploaded_by: user.id,
-    achievement_date: achievementDate || null,
-    faculty_guide: facultyGuide || null,
-    external_link: externalLink || null,
-  }
-);
+        file,
+        images,
+        {
+          student_name:
+            studentName.trim(),
+
+          title:
+            title.trim(),
+
+          description:
+            description.trim() || null,
+
+          department:
+            finalDepartment,
+
+          event:
+            event.trim(),
+
+          position:
+            position.trim(),
+
+          uploaded_by:
+            user.id,
+
+          achievement_date:
+            achievementDate,
+
+          faculty_guide:
+            facultyGuide.trim() || null,
+
+          external_link:
+            externalLink.trim() || null,
+        }
+      );
 
       toast.success(
         "Achievement uploaded successfully!"
@@ -104,16 +170,25 @@ export default function UploadAchievementDialog({
       setFile(null);
       setImages([]);
 
+      if (!department) {
+        setSelectedDepartment("");
+      }
+
       onUploadSuccess();
+
     } catch (error) {
-      console.error(error);
+      console.error(
+        "Achievement upload failed:",
+        error
+      );
 
       toast.error(
         "Failed to upload achievement."
       );
     }
   }
-    return (
+
+  return (
     <div className="space-y-5">
 
       {/* ===========================
@@ -128,56 +203,84 @@ export default function UploadAchievementDialog({
 
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
 
-          <div>
-            <Label>Student Name *</Label>
+          {/* Student Name */}
+
+          <div className="space-y-2">
+            <Label>
+              Student Name *
+            </Label>
 
             <Input
               placeholder="Enter student name"
               value={studentName}
               onChange={(e) =>
-                setStudentName(e.target.value)
+                setStudentName(
+                  e.target.value
+                )
               }
             />
           </div>
 
-          <div>
-            <Label>Achievement Title *</Label>
+          {/* Achievement Title */}
+
+          <div className="space-y-2">
+            <Label>
+              Achievement Title *
+            </Label>
 
             <Input
               placeholder="Enter achievement title"
               value={title}
               onChange={(e) =>
-                setTitle(e.target.value)
+                setTitle(
+                  e.target.value
+                )
               }
             />
           </div>
 
-          <div>
-            <Label>Event *</Label>
+          {/* Event */}
+
+          <div className="space-y-2">
+            <Label>
+              Event *
+            </Label>
 
             <Input
               placeholder="Smart India Hackathon"
               value={event}
               onChange={(e) =>
-                setEvent(e.target.value)
+                setEvent(
+                  e.target.value
+                )
               }
             />
           </div>
 
-          <div>
-            <Label>Position *</Label>
+          {/* Position */}
+
+          <div className="space-y-2">
+            <Label>
+              Position *
+            </Label>
 
             <Input
               placeholder="Winner / Runner Up"
               value={position}
               onChange={(e) =>
-                setPosition(e.target.value)
+                setPosition(
+                  e.target.value
+                )
               }
             />
           </div>
 
-          <div>
-            <Label>Achievement Date *</Label>
+          {/* Achievement Date */}
+
+          <div className="space-y-2">
+            <Label>
+              Achievement Date *
+            </Label>
 
             <Input
               type="date"
@@ -190,15 +293,49 @@ export default function UploadAchievementDialog({
             />
           </div>
 
-          <div>
+          {/* Department */}
 
-            <Label>Department</Label>
+          <div className="space-y-2">
+            <Label>
+              Department *
+            </Label>
 
-            <Input
-              value={department ?? ""}
-              disabled
-            />
+            {department ? (
+              <Input
+                value={
+                  departments[
+                    department as keyof typeof departments
+                  ]?.name ?? department
+                }
+                disabled
+              />
+            ) : (
+              <select
+                value={selectedDepartment}
+                onChange={(e) =>
+                  setSelectedDepartment(
+                    e.target.value
+                  )
+                }
+                className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm outline-none transition focus:ring-2 focus:ring-ring"
+              >
+                <option value="">
+                  Select Department
+                </option>
 
+                {Object.values(
+                  departments
+                ).map((dept) => (
+                  <option
+                    key={dept.slug}
+                    value={dept.slug}
+                  >
+                    {dept.shortName} —{" "}
+                    {dept.name}
+                  </option>
+                ))}
+              </select>
+            )}
           </div>
 
         </div>
@@ -215,15 +352,15 @@ export default function UploadAchievementDialog({
           Description
         </h2>
 
-        <div>
+        <div className="space-y-2">
 
           <Label>
-            Achievement Description *
+            Achievement Description
           </Label>
 
           <textarea
             rows={3}
-            placeholder="Describe the achievement..."
+            placeholder="Describe the achievement... (Optional)"
             value={description}
             onChange={(e) =>
               setDescription(
@@ -238,10 +375,10 @@ export default function UploadAchievementDialog({
       </div>
 
       {/* ===========================
-          Faculty
+          Faculty Guide
       ============================ */}
 
-      <div className="space-y-2">
+      <div className="space-y-4">
 
         <h2 className="text-lg font-semibold">
           Faculty Guide
@@ -269,9 +406,11 @@ export default function UploadAchievementDialog({
           Certificate
         </h2>
 
-        <div>
+        <div className="space-y-2">
 
-          <Label>Upload Certificate *</Label>
+          <Label>
+            Upload Certificate *
+          </Label>
 
           <Input
             type="file"
@@ -284,10 +423,17 @@ export default function UploadAchievementDialog({
             }
           />
 
+          {file && (
+            <p className="text-xs text-muted-foreground">
+              Selected: {file.name}
+            </p>
+          )}
+
         </div>
 
       </div>
-            {/* ===========================
+
+      {/* ===========================
           Achievement Images
       ============================ */}
 
@@ -297,9 +443,11 @@ export default function UploadAchievementDialog({
           Achievement Images
         </h2>
 
-        <div>
+        <div className="space-y-2">
 
-          <Label>Upload Images</Label>
+          <Label>
+            Upload Images
+          </Label>
 
           <Input
             type="file"
@@ -323,20 +471,26 @@ export default function UploadAchievementDialog({
 
               <div className="space-y-2">
 
-                {images.map((image) => (
-                  <div
-                    key={image.name}
-                    className="flex items-center justify-between rounded-md border bg-background px-3 py-2"
-                  >
-                    <span className="truncate text-sm">
-                      📷 {image.name}
-                    </span>
+                {images.map(
+                  (image, index) => (
+                    <div
+                      key={`${image.name}-${index}`}
+                      className="flex items-center justify-between rounded-md border bg-background px-3 py-2"
+                    >
+                      <span className="truncate text-sm">
+                        📷 {image.name}
+                      </span>
 
-                    <span className="text-xs text-muted-foreground">
-                      {(image.size / 1024).toFixed(1)} KB
-                    </span>
-                  </div>
-                ))}
+                      <span className="ml-3 shrink-0 text-xs text-muted-foreground">
+                        {(
+                          image.size /
+                          1024
+                        ).toFixed(1)}{" "}
+                        KB
+                      </span>
+                    </div>
+                  )
+                )}
 
               </div>
 
@@ -348,7 +502,7 @@ export default function UploadAchievementDialog({
       </div>
 
       {/* ===========================
-          External Link
+          External Reference
       ============================ */}
 
       <div className="space-y-4">

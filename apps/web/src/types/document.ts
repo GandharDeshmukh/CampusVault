@@ -1,5 +1,6 @@
 export interface Document {
   id: string;
+
   title: string;
   description: string;
   file_name: string;
@@ -11,6 +12,7 @@ export interface Document {
   // NBA
   criterion: number | null;
   subcategory: string | null;
+  evidence_requirement: string | null;
 
   // Academic
   academic_year: string | null;

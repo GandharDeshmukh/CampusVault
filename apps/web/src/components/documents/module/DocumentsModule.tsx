@@ -8,18 +8,21 @@ interface Props {
   department?: string;
   criterion?: number;
   subcategory?: string;
+  onUploadSuccess?: () => void;
 }
 
 export default function DocumentsModule({
   department,
   criterion,
   subcategory,
+  onUploadSuccess,
 }: Props) {
   const [refreshKey, setRefreshKey] = useState(0);
   const [search, setSearch] = useState("");
 
   function refreshDocuments() {
     setRefreshKey((prev) => prev + 1);
+    onUploadSuccess?.();
   }
 
   return (

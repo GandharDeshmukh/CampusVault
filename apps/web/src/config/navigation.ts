@@ -25,7 +25,7 @@ export const navigationItems: NavigationItem[] = [
   },
   {
   title: "NBA Accreditation",
-  path: "/documents",
+  path: "/nba",
   icon: FolderOpen,
 },
   {

@@ -16,6 +16,8 @@ import DepartmentAnalytics from "@/components/departments/analytics/DepartmentAn
 import Faculty from "@/pages/Faculty";
 import AchievementDetails from "@/pages/AchievementDetails";
 import CriterionDetails from "@/pages/CriterionDetails";
+import NbaCriteriaModule from "@/components/nba/NbaCriteriaModule";
+import Reports from "@/pages/Reports";
 
 export default function AppRouter() {
   return (
@@ -34,6 +36,37 @@ export default function AppRouter() {
     <Route path="/documents" element={<Documents />} />
     <Route path="/achievements" element={<Achievements />} />
     <Route path="/departments" element={<Departments />} />
+    <Route path="/nba" element={<NbaCriteriaModule />} />
+    <Route
+  path="/reports/:department"
+  element={<Reports />}
+/>
+    <Route
+  path="/reports"
+  element={<Reports />}
+/>
+    <Route
+  path="/nba/:department"
+  element={<NbaCriteriaModule />}
+/>
+
+<Route
+  path="/nba/:department/criterion/:criterionId"
+  element={<CriterionDetails />}
+/>
+    <Route
+  path="/nba/:department"
+  element={<NbaCriteriaModule />}
+/>
+
+<Route
+  path="/nba/:department/criterion/:criterionId"
+  element={<CriterionDetails />}
+/>
+    <Route
+  path="/nba/criterion/:criterionId"
+  element={<CriterionDetails />}
+/>
     <Route
   path="/faculty"
   element={<Faculty />}

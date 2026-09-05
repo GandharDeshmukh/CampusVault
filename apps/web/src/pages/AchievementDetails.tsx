@@ -15,8 +15,8 @@ import {
 
 import { getAchievementById } from "@/services/achievement.service";
 import type { Achievement } from "@/types/achievement";
+import { getDepartmentName } from "@/utils/departments";
 
-// Change this import if your Button component comes from a different package.
 import { Button } from "@workspace/ui/components/button";
 
 export default function AchievementDetails() {
@@ -26,14 +26,17 @@ export default function AchievementDetails() {
   const [achievement, setAchievement] =
     useState<Achievement | null>(null);
 
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] =
+    useState(true);
 
   useEffect(() => {
     async function loadAchievement() {
       if (!id) return;
 
       try {
-        const data = await getAchievementById(id);
+        const data =
+          await getAchievementById(id);
+
         setAchievement(data);
       } finally {
         setLoading(false);
@@ -58,6 +61,11 @@ export default function AchievementDetails() {
       </div>
     );
   }
+
+  const departmentName =
+    getDepartmentName(
+      achievement.department
+    ) ?? achievement.department;
 
   return (
     <div className="space-y-6">
@@ -101,7 +109,7 @@ export default function AchievementDetails() {
                 </span>
 
                 <span className="rounded-full bg-green-100 px-3 py-1 text-sm font-medium text-green-700">
-                  {achievement.department}
+                  {departmentName}
                 </span>
 
               </div>
@@ -113,10 +121,12 @@ export default function AchievementDetails() {
         </div>
 
       </div>
-            {/* Description */}
+
+      {/* Description */}
 
       {achievement.description && (
         <div className="rounded-xl border bg-background p-6">
+
           <h2 className="mb-4 text-xl font-semibold">
             Description
           </h2>
@@ -124,6 +134,7 @@ export default function AchievementDetails() {
           <p className="leading-7 text-muted-foreground">
             {achievement.description}
           </p>
+
         </div>
       )}
 
@@ -131,10 +142,13 @@ export default function AchievementDetails() {
 
       {achievement.faculty_guide && (
         <div className="rounded-xl border bg-background p-6">
+
           <div className="flex items-center gap-3">
+
             <GraduationCap className="h-6 w-6 text-primary" />
 
             <div>
+
               <h2 className="font-semibold">
                 Faculty Guide
               </h2>
@@ -142,8 +156,11 @@ export default function AchievementDetails() {
               <p className="text-muted-foreground">
                 {achievement.faculty_guide}
               </p>
+
             </div>
+
           </div>
+
         </div>
       )}
 
@@ -152,27 +169,35 @@ export default function AchievementDetails() {
       {achievement.image_urls &&
         achievement.image_urls.length > 0 && (
           <div className="rounded-xl border bg-background p-6">
+
             <h2 className="mb-4 text-xl font-semibold">
               Achievement Images
             </h2>
 
             <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-              {achievement.image_urls.map((image) => (
-                <img
-                  key={image}
-                  src={image}
-                  alt="Achievement"
-                  className="h-56 w-full rounded-lg object-cover transition hover:scale-[1.02]"
-                />
-              ))}
+
+              {achievement.image_urls.map(
+                (image) => (
+                  <img
+                    key={image}
+                    src={image}
+                    alt="Achievement"
+                    className="h-56 w-full rounded-lg object-cover transition hover:scale-[1.02]"
+                  />
+                )
+              )}
+
             </div>
+
           </div>
         )}
-              {/* Resources */}
+
+      {/* Resources */}
 
       {(achievement.certificate_url ||
         achievement.external_link) && (
         <div className="rounded-xl border bg-background p-6">
+
           <h2 className="mb-4 text-xl font-semibold">
             Resources
           </h2>
@@ -181,7 +206,9 @@ export default function AchievementDetails() {
 
             {achievement.certificate_url && (
               <a
-                href={achievement.certificate_url}
+                href={
+                  achievement.certificate_url
+                }
                 target="_blank"
                 rel="noreferrer"
                 className="inline-flex items-center gap-2 rounded-lg border px-4 py-2 transition hover:bg-muted"
@@ -193,7 +220,9 @@ export default function AchievementDetails() {
 
             {achievement.external_link && (
               <a
-                href={achievement.external_link}
+                href={
+                  achievement.external_link
+                }
                 target="_blank"
                 rel="noreferrer"
                 className="inline-flex items-center gap-2 rounded-lg border px-4 py-2 transition hover:bg-muted"
@@ -204,6 +233,7 @@ export default function AchievementDetails() {
             )}
 
           </div>
+
         </div>
       )}
 
@@ -216,6 +246,8 @@ export default function AchievementDetails() {
         </h2>
 
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+
+          {/* Student */}
 
           <div className="flex items-center gap-3">
 
@@ -235,6 +267,8 @@ export default function AchievementDetails() {
 
           </div>
 
+          {/* Department */}
+
           <div className="flex items-center gap-3">
 
             <Building2 className="h-5 w-5 text-primary" />
@@ -246,12 +280,14 @@ export default function AchievementDetails() {
               </p>
 
               <p className="font-medium">
-                {achievement.department}
+                {departmentName}
               </p>
 
             </div>
 
           </div>
+
+          {/* Event */}
 
           <div className="flex items-center gap-3">
 
@@ -271,6 +307,8 @@ export default function AchievementDetails() {
 
           </div>
 
+          {/* Date */}
+
           <div className="flex items-center gap-3">
 
             <Calendar className="h-5 w-5 text-primary" />
@@ -283,10 +321,10 @@ export default function AchievementDetails() {
 
               <p className="font-medium">
                 {achievement.achievement_date
-  ? new Date(
-      achievement.achievement_date
-    ).toLocaleDateString()
-  : "-"}
+                  ? new Date(
+                      achievement.achievement_date
+                    ).toLocaleDateString()
+                  : "-"}
               </p>
 
             </div>

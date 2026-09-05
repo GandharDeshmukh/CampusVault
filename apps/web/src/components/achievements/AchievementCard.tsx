@@ -9,6 +9,7 @@ import {
 import { useNavigate } from "react-router-dom";
 
 import type { Achievement } from "@/types/achievement";
+import { getDepartmentName } from "@/utils/departments";
 
 import AchievementActions from "./AchievementActions";
 
@@ -24,7 +25,8 @@ export default function AchievementCard({
   const navigate = useNavigate();
 
   function getBadgeColor() {
-    const position = achievement.position.toLowerCase();
+    const position =
+      achievement.position.toLowerCase();
 
     if (
       position.includes("winner") ||
@@ -50,6 +52,11 @@ export default function AchievementCard({
   const previewImage =
     achievement.image_urls?.[0];
 
+  const departmentName =
+    getDepartmentName(
+      achievement.department
+    ) ?? achievement.department;
+
   return (
     <div className="overflow-hidden rounded-xl border bg-background transition hover:shadow-lg">
       <div className="flex flex-col md:flex-row">
@@ -57,7 +64,9 @@ export default function AchievementCard({
         <div
           className="cursor-pointer md:w-72"
           onClick={() =>
-            navigate(`/achievements/${achievement.id}`)
+            navigate(
+              `/achievements/${achievement.id}`
+            )
           }
         >
           {previewImage ? (
@@ -78,7 +87,9 @@ export default function AchievementCard({
           <div
             className="flex-1 cursor-pointer"
             onClick={() =>
-              navigate(`/achievements/${achievement.id}`)
+              navigate(
+                `/achievements/${achievement.id}`
+              )
             }
           >
 
@@ -95,7 +106,7 @@ export default function AchievementCard({
               </span>
 
               <span className="rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700">
-                {achievement.department}
+                {departmentName}
               </span>
 
             </div>
@@ -124,7 +135,9 @@ export default function AchievementCard({
 
               {achievement.faculty_guide && (
                 <p>
-                  <strong>Faculty Guide:</strong>{" "}
+                  <strong>
+                    Faculty Guide:
+                  </strong>{" "}
                   {achievement.faculty_guide}
                 </p>
               )}
@@ -136,12 +149,17 @@ export default function AchievementCard({
               )}
 
               <div className="mt-4 flex flex-wrap gap-2">
-                                {achievement.certificate_url && (
+
+                {achievement.certificate_url && (
                   <a
-                    href={achievement.certificate_url}
+                    href={
+                      achievement.certificate_url
+                    }
                     target="_blank"
                     rel="noreferrer"
-                    onClick={(e) => e.stopPropagation()}
+                    onClick={(e) =>
+                      e.stopPropagation()
+                    }
                     className="inline-flex items-center gap-2 rounded-md border px-3 py-2 text-sm hover:bg-muted"
                   >
                     <FileText className="h-4 w-4" />
@@ -151,18 +169,25 @@ export default function AchievementCard({
 
                 {achievement.external_link && (
                   <a
-                    href={achievement.external_link}
+                    href={
+                      achievement.external_link
+                    }
                     target="_blank"
                     rel="noreferrer"
-                    onClick={(e) => e.stopPropagation()}
+                    onClick={(e) =>
+                      e.stopPropagation()
+                    }
                     className="inline-flex items-center gap-2 rounded-md border px-3 py-2 text-sm hover:bg-muted"
                   >
                     <ExternalLink className="h-4 w-4" />
                     External Link
                   </a>
                 )}
+
               </div>
+
             </div>
+
           </div>
 
           <div className="ml-4 flex-shrink-0">
@@ -173,6 +198,7 @@ export default function AchievementCard({
           </div>
 
         </div>
+
       </div>
     </div>
   );
