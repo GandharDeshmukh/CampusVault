@@ -39,6 +39,11 @@ export const navigationItems: NavigationItem[] = [
   path: "/academic-calendar",
   icon: CalendarDays,
 },
+{
+  title: "Activity Planner",
+  path: "/activity-planner",
+  icon: CalendarDays,
+},
   {
     title: "Faculty",
     path: "/faculty",
@@ -69,4 +74,5 @@ export const navigationItems: NavigationItem[] = [
     path: "/settings",
     icon: Settings,
   },
+  
 ];

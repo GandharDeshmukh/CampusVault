@@ -19,6 +19,7 @@ import CriterionDetails from "@/pages/CriterionDetails";
 import NbaCriteriaModule from "@/components/nba/NbaCriteriaModule";
 import Reports from "@/pages/Reports";
 import AcademicCalendar from "@/pages/AcademicCalendar";
+import ActivityPlanner from "@/pages/ActivityPlanner";
 
 export default function AppRouter() {
   return (
@@ -38,6 +39,10 @@ export default function AppRouter() {
     <Route path="/achievements" element={<Achievements />} />
     <Route path="/departments" element={<Departments />} />
     <Route path="/nba" element={<NbaCriteriaModule />} />
+    <Route
+  path="/activity-planner"
+  element={<ActivityPlanner />}
+/>
     <Route
   path="/academic-calendar"
   element={<AcademicCalendar />}
