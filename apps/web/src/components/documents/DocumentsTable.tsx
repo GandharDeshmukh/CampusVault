@@ -101,8 +101,9 @@ export default function DocumentsTable({
 
                 <td className="px-6 py-4 text-center">
                   <DocumentActions
-                    fileUrl={doc.file_url}
-                  />
+  document={doc}
+  onDeleted={loadDocuments}
+/>
                 </td>
               </tr>
             ))

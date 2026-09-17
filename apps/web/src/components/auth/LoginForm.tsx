@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Navigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 
 import { Button } from "@workspace/ui/components/button";
 import { Card } from "@workspace/ui/components/card";
@@ -33,14 +33,22 @@ export default function LoginForm() {
     try {
       setLoading(true);
 
-      const { error } = await signIn(email, password);
+      const { error } = await signIn(
+        email,
+        password
+      );
 
       if (error) {
         alert(error.message);
+        return;
       }
 
-      // No navigate() here.
-      // AuthContext will detect the session automatically.
+      // AuthContext will detect the session
+      // and redirect automatically.
+    } catch (error) {
+      console.error(error);
+
+      alert("Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -62,6 +70,7 @@ export default function LoginForm() {
         onSubmit={handleLogin}
         className="space-y-6"
       >
+        {/* Email */}
         <div className="space-y-2">
           <Label htmlFor="email">
             Email
@@ -78,6 +87,7 @@ export default function LoginForm() {
           />
         </div>
 
+        {/* Password */}
         <div className="space-y-2">
           <Label htmlFor="password">
             Password
@@ -94,6 +104,7 @@ export default function LoginForm() {
           />
         </div>
 
+        {/* Remember + Forgot Password */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Checkbox
@@ -108,20 +119,23 @@ export default function LoginForm() {
             </span>
           </div>
 
-          <button
-            type="button"
+          <Link
+            to="/forgot-password"
             className="text-sm text-blue-600 hover:underline"
           >
             Forgot Password?
-          </button>
+          </Link>
         </div>
 
+        {/* Login */}
         <Button
           type="submit"
           className="w-full"
           disabled={loading}
         >
-          {loading ? "Signing In..." : "Sign In"}
+          {loading
+            ? "Signing In..."
+            : "Sign In"}
         </Button>
       </form>
     </Card>
