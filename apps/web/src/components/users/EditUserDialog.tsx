@@ -92,7 +92,7 @@ export default function EditUserDialog({
       const { error } = await updateUser(user.id, {
         name: name.trim(),
         role,
-        department: department.trim() || null,
+        department: department.trim() || undefined,
         is_active: isActive,
       });
 
@@ -123,7 +123,7 @@ export default function EditUserDialog({
       open={open}
       onOpenChange={setOpen}
     >
-      <DialogTrigger asChild>
+      <DialogTrigger>
         <Button
           variant="ghost"
           size="icon"
