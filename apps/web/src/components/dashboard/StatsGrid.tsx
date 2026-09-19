@@ -32,42 +32,41 @@ export default function StatsGrid() {
 
   async function loadStats() {
     const data = await getDashboardStats();
-
     setStats(data);
   }
 
   return (
-    <div className="mb-8 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+    <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
       <StatsCard
         title="Documents"
-        value={stats.documents.toString()}
+        value={stats.documents}
         icon={FileText}
         color="#2563EB"
-        change="Stored Documents"
+        change="Documents stored"
       />
 
       <StatsCard
         title="Achievements"
-        value={stats.achievements.toString()}
+        value={stats.achievements}
         icon={Trophy}
         color="#F59E0B"
-        change="Student Achievements"
+        change="Achievements recorded"
       />
 
       <StatsCard
         title="Faculty"
-        value={stats.faculty.toString()}
+        value={stats.faculty}
         icon={GraduationCap}
         color="#7C3AED"
-        change="Faculty Members"
+        change="Faculty members"
       />
 
       <StatsCard
         title="Departments"
-        value={stats.departments.toString()}
+        value={stats.departments}
         icon={Building2}
         color="#10B981"
-        change="Departments"
+        change="Active departments"
       />
     </div>
   );

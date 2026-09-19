@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
+import { Trophy, ArrowUpRight } from "lucide-react";
 
 import { Card } from "@workspace/ui/components/card";
-import { Trophy } from "lucide-react";
 
 import { getRecentAchievements } from "@/services/recent.service";
 
@@ -35,45 +35,71 @@ export default function RecentAchievements() {
   }
 
   return (
-    <Card className="rounded-2xl p-6 shadow-md">
-      <div className="mb-5 flex items-center justify-between">
-        <h2 className="text-xl font-semibold">
-          Recent Achievements
-        </h2>
+    <Card className="rounded-2xl border bg-card p-6 shadow-sm">
+      {/* Header */}
+      <div className="mb-6 flex items-center justify-between">
+        <div>
+          <h2 className="text-lg font-semibold">
+            Recent Achievements
+          </h2>
 
-        <Trophy className="text-yellow-500" />
+          <p className="mt-1 text-sm text-muted-foreground">
+            Recently recorded student achievements
+          </p>
+        </div>
+
+        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-muted">
+          <Trophy className="h-5 w-5 text-muted-foreground" />
+        </div>
       </div>
 
       {achievements.length === 0 ? (
-        <div className="py-10 text-center text-muted-foreground">
+        <div className="flex min-h-32 items-center justify-center text-sm text-muted-foreground">
           No achievements yet.
         </div>
       ) : (
-        <div className="space-y-4">
+        <div className="divide-y">
           {achievements.map((achievement) => (
             <div
               key={achievement.id}
-              className="rounded-xl bg-slate-50 p-4 transition hover:bg-slate-100 dark:bg-muted dark:hover:bg-muted/70"
+              className="group flex items-center gap-4 py-4 first:pt-0 last:pb-0"
             >
-              <p className="font-medium">
-                {achievement.title}
-              </p>
-
-              <p className="mt-1 text-sm text-slate-500">
-                {achievement.student_name}
-              </p>
-
-              <div className="mt-2 flex items-center justify-between">
-                <span className="text-xs text-muted-foreground">
-                  {achievement.department}
-                </span>
-
-                <span className="text-xs text-muted-foreground">
-                  {new Date(
-                    achievement.created_at
-                  ).toLocaleDateString()}
-                </span>
+              {/* Icon */}
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border bg-muted/40">
+                <Trophy className="h-4 w-4 text-muted-foreground" />
               </div>
+
+              {/* Information */}
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-sm font-medium">
+                  {achievement.title}
+                </p>
+
+                <p className="mt-1 truncate text-xs text-muted-foreground">
+                  {achievement.student_name}
+                </p>
+
+                <div className="mt-1 flex items-center gap-2 text-xs text-muted-foreground">
+                  <span>{achievement.department}</span>
+
+                  <span>•</span>
+
+                  <span>
+                    {new Date(
+                      achievement.created_at
+                    ).toLocaleDateString("en-IN", {
+                      day: "numeric",
+                      month: "short",
+                      year: "numeric",
+                    })}
+                  </span>
+                </div>
+              </div>
+
+              {/* Action */}
+              <ArrowUpRight
+                className="h-4 w-4 shrink-0 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100"
+              />
             </div>
           ))}
         </div>

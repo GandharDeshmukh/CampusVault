@@ -17,41 +17,31 @@ export default function StatsCard({
   change,
 }: StatsCardProps) {
   return (
-    <Card className="group relative overflow-hidden rounded-2xl border border-border/50 bg-background p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/20 hover:shadow-xl">
-
-      {/* Background Glow */}
-      <div
-        className="absolute -right-10 -top-10 h-32 w-32 rounded-full opacity-10 blur-3xl transition-opacity duration-300 group-hover:opacity-20"
-        style={{ backgroundColor: color }}
-      />
-
-      <div className="relative flex items-start justify-between">
-
-        <div className="space-y-3">
-
-          <p className="text-sm font-medium uppercase tracking-wide text-muted-foreground">
+    <Card className="rounded-2xl border bg-card p-5 shadow-sm transition-colors hover:bg-muted/20">
+      <div className="flex items-start justify-between gap-4">
+        <div className="min-w-0">
+          <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
             {title}
           </p>
 
-          <h2 className="text-4xl font-bold tracking-tight">
+          <p className="mt-3 text-3xl font-semibold tracking-tight">
             {value}
-          </h2>
+          </p>
 
-          <div className="inline-flex rounded-full bg-green-50 px-3 py-1 text-xs font-medium text-green-700">
+          <p className="mt-2 text-xs text-muted-foreground">
             {change}
-          </div>
-
+          </p>
         </div>
 
         <div
-          className="flex h-16 w-16 items-center justify-center rounded-2xl shadow-lg transition-transform duration-300 group-hover:scale-110"
+          className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl"
           style={{
-            background: `linear-gradient(135deg, ${color}, ${color}CC)`,
+            backgroundColor: `${color}15`,
+            color,
           }}
         >
-          <Icon className="h-8 w-8 text-white" />
+          <Icon className="h-5 w-5" />
         </div>
-
       </div>
     </Card>
   );

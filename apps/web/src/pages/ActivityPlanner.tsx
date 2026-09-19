@@ -17,6 +17,8 @@ import { Button } from "@workspace/ui/components/button";
 import { Card } from "@workspace/ui/components/card";
 
 import { supabase } from "@/lib/supabase";
+import { getDepartmentOrder } from "@/utils/departments";
+
 import {
   addActivity,
   deleteActivity,
@@ -69,9 +71,27 @@ function getDepartmentDisplayName(department: string) {
     "e&ce": "Electronics and Computer Engineering",
     entc: "Electronics and Telecommunication Engineering",
     aids: "Artificial Intelligence and Data Science",
+    "ai&ds": "Artificial Intelligence and Data Science",
   };
 
   return names[department.toLowerCase()] ?? department;
+}
+
+function normalizeDepartment(department: string) {
+  const value = department.trim().toLowerCase();
+
+  if (value === "ce") return "CE";
+  if (value === "entc") return "ENTC";
+  if (value === "it") return "IT";
+  if (value === "aids" || value === "ai&ds") {
+    return "AI&DS";
+  }
+
+  if (value === "ece" || value === "e&ce") {
+    return "E&CE";
+  }
+
+  return department.toUpperCase();
 }
 
 export default function ActivityPlanner() {
@@ -146,13 +166,23 @@ export default function ActivityPlanner() {
     setLoading(false);
   }
 
-  const departments = Array.from(
-    new Set(
-      faculties
-        .map((faculty) => faculty.department)
-        .filter(Boolean)
-    )
-  );
+  const departments = useMemo(() => {
+    return Array.from(
+      new Set(
+        faculties
+          .map((faculty) => faculty.department)
+          .filter(Boolean)
+      )
+    ).sort(
+      (a, b) =>
+        getDepartmentOrder(
+          normalizeDepartment(a)
+        ) -
+        getDepartmentOrder(
+          normalizeDepartment(b)
+        )
+    );
+  }, [faculties]);
 
   const filteredFaculty = selectedDepartment
     ? faculties.filter(
@@ -521,11 +551,9 @@ export default function ActivityPlanner() {
 
   return (
     <div className="space-y-6 p-6">
-
       {/* Header */}
 
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-
         <div>
           <h1 className="text-2xl font-bold tracking-tight">
             Activity Planner
@@ -544,17 +572,13 @@ export default function ActivityPlanner() {
 
           Add Activity
         </Button>
-
       </div>
 
       {/* Filters */}
 
       <Card className="p-5">
-
         <div className="grid gap-4 md:grid-cols-2">
-
           <div>
-
             <label className="mb-2 block text-sm font-medium">
               Department
             </label>
@@ -568,7 +592,6 @@ export default function ActivityPlanner() {
               }
               className="w-full rounded-lg border bg-background px-3 py-2 text-sm"
             >
-
               <option value="">
                 All Departments
               </option>
@@ -585,13 +608,10 @@ export default function ActivityPlanner() {
                   </option>
                 )
               )}
-
             </select>
-
           </div>
 
           <div>
-
             <label className="mb-2 block text-sm font-medium">
               Faculty
             </label>
@@ -605,7 +625,6 @@ export default function ActivityPlanner() {
               }
               className="w-full rounded-lg border bg-background px-3 py-2 text-sm"
             >
-
               <option value="">
                 {selectedDepartment
                   ? "Select Faculty"
@@ -622,13 +641,9 @@ export default function ActivityPlanner() {
                   </option>
                 )
               )}
-
             </select>
-
           </div>
-
         </div>
-
       </Card>
 
       {/* Summary */}
@@ -636,7 +651,6 @@ export default function ActivityPlanner() {
       {!loading &&
         activities.length > 0 && (
           <div className="space-y-4">
-
             <div>
               <h2 className="text-lg font-semibold">
                 Activity Summary
@@ -648,11 +662,8 @@ export default function ActivityPlanner() {
             </div>
 
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-
               <Card className="p-5">
-
                 <div className="flex items-center gap-3">
-
                   <div className="rounded-lg bg-primary/10 p-2">
                     <CalendarDays
                       size={20}
@@ -661,7 +672,6 @@ export default function ActivityPlanner() {
                   </div>
 
                   <div>
-
                     <p className="text-sm text-muted-foreground">
                       Total Activities
                     </p>
@@ -669,23 +679,17 @@ export default function ActivityPlanner() {
                     <p className="text-2xl font-bold">
                       {summary.total}
                     </p>
-
                   </div>
-
                 </div>
-
               </Card>
 
               <Card className="p-5">
-
                 <div className="flex items-center gap-3">
-
                   <div className="rounded-lg bg-muted p-2">
                     <CircleDot size={20} />
                   </div>
 
                   <div>
-
                     <p className="text-sm text-muted-foreground">
                       Planned
                     </p>
@@ -693,23 +697,17 @@ export default function ActivityPlanner() {
                     <p className="text-2xl font-bold">
                       {summary.planned}
                     </p>
-
                   </div>
-
                 </div>
-
               </Card>
 
               <Card className="p-5">
-
                 <div className="flex items-center gap-3">
-
                   <div className="rounded-lg bg-muted p-2">
                     <PlayCircle size={20} />
                   </div>
 
                   <div>
-
                     <p className="text-sm text-muted-foreground">
                       Ongoing
                     </p>
@@ -717,23 +715,17 @@ export default function ActivityPlanner() {
                     <p className="text-2xl font-bold">
                       {summary.ongoing}
                     </p>
-
                   </div>
-
                 </div>
-
               </Card>
 
               <Card className="p-5">
-
                 <div className="flex items-center gap-3">
-
                   <div className="rounded-lg bg-muted p-2">
                     <CheckCircle2 size={20} />
                   </div>
 
                   <div>
-
                     <p className="text-sm text-muted-foreground">
                       Completed
                     </p>
@@ -741,27 +733,20 @@ export default function ActivityPlanner() {
                     <p className="text-2xl font-bold">
                       {summary.completed}
                     </p>
-
                   </div>
-
                 </div>
-
               </Card>
-
             </div>
 
             <div className="grid gap-4 lg:grid-cols-2">
-
               {/* Faculty Activity Count */}
 
               <Card className="p-5">
-
                 <h3 className="font-semibold">
                   Faculty Activity Count
                 </h3>
 
                 <div className="mt-4 space-y-3">
-
                   {Object.entries(
                     summary.facultyCounts
                   )
@@ -778,16 +763,13 @@ export default function ActivityPlanner() {
                           key={facultyId}
                           className="flex items-center justify-between rounded-lg bg-muted/40 px-3 py-2"
                         >
-
                           <div className="flex items-start gap-2">
-
                             <User
                               size={15}
                               className="mt-1 shrink-0"
                             />
 
                             <div>
-
                               <p className="text-sm font-medium">
                                 {faculty.name}
                               </p>
@@ -797,33 +779,26 @@ export default function ActivityPlanner() {
                                   faculty.department
                                 )}
                               </p>
-
                             </div>
-
                           </div>
 
                           <span className="font-semibold">
                             {faculty.count}
                           </span>
-
                         </div>
                       )
                     )}
-
                 </div>
-
               </Card>
 
               {/* Activity Type Breakdown */}
 
               <Card className="p-5">
-
                 <h3 className="font-semibold">
                   Activity Type Breakdown
                 </h3>
 
                 <div className="mt-4 space-y-3">
-
                   {Object.entries(
                     summary.typeCounts
                   )
@@ -840,7 +815,6 @@ export default function ActivityPlanner() {
                           key={type}
                           className="flex items-center justify-between rounded-lg bg-muted/40 px-3 py-2"
                         >
-
                           <span className="text-sm">
                             {type}
                           </span>
@@ -848,17 +822,12 @@ export default function ActivityPlanner() {
                           <span className="font-semibold">
                             {count}
                           </span>
-
                         </div>
                       )
                     )}
-
                 </div>
-
               </Card>
-
             </div>
-
           </div>
         )}
 
@@ -867,9 +836,7 @@ export default function ActivityPlanner() {
       {selectedFaculty &&
         selectedFacultyName && (
           <div className="rounded-xl border bg-muted/30 px-5 py-4">
-
             <div className="flex items-center gap-3">
-
               <div className="rounded-lg bg-primary/10 p-2">
                 <User
                   size={18}
@@ -878,7 +845,6 @@ export default function ActivityPlanner() {
               </div>
 
               <div>
-
                 <p className="text-xs text-muted-foreground">
                   Planning activities for
                 </p>
@@ -886,11 +852,8 @@ export default function ActivityPlanner() {
                 <p className="font-semibold">
                   {selectedFacultyName}
                 </p>
-
               </div>
-
             </div>
-
           </div>
         )}
 
@@ -898,9 +861,7 @@ export default function ActivityPlanner() {
 
       {showForm && (
         <Card className="p-6">
-
           <div className="mb-5">
-
             <h2 className="text-lg font-semibold">
               {editingActivityId
                 ? "Edit Activity"
@@ -908,7 +869,6 @@ export default function ActivityPlanner() {
             </h2>
 
             <p className="text-sm text-muted-foreground">
-
               {editingActivityId
                 ? "Update the activity details below."
                 : "Add an activity for "}
@@ -919,20 +879,15 @@ export default function ActivityPlanner() {
                     {selectedFacultyName}.
                   </span>
                 )}
-
             </p>
-
           </div>
 
           <form
             onSubmit={handleSubmit}
             className="space-y-5"
           >
-
             <div className="grid gap-4 md:grid-cols-2">
-
               <div>
-
                 <label className="mb-2 block text-sm font-medium">
                   Activity Title
                 </label>
@@ -948,11 +903,9 @@ export default function ActivityPlanner() {
                   placeholder="e.g. Guest Lecture"
                   className="w-full rounded-lg border bg-background px-3 py-2 text-sm"
                 />
-
               </div>
 
               <div>
-
                 <label className="mb-2 block text-sm font-medium">
                   Activity Type
                 </label>
@@ -969,7 +922,6 @@ export default function ActivityPlanner() {
                   }
                   className="w-full rounded-lg border bg-background px-3 py-2 text-sm"
                 >
-
                   {activityTypes.map(
                     (type) => (
                       <option
@@ -980,13 +932,10 @@ export default function ActivityPlanner() {
                       </option>
                     )
                   )}
-
                 </select>
-
               </div>
 
               <div>
-
                 <label className="mb-2 block text-sm font-medium">
                   Start Date
                 </label>
@@ -1004,11 +953,9 @@ export default function ActivityPlanner() {
                   }
                   className="w-full rounded-lg border bg-background px-3 py-2 text-sm"
                 />
-
               </div>
 
               <div>
-
                 <label className="mb-2 block text-sm font-medium">
                   End Date
                 </label>
@@ -1024,11 +971,9 @@ export default function ActivityPlanner() {
                   }
                   className="w-full rounded-lg border bg-background px-3 py-2 text-sm"
                 />
-
               </div>
 
               <div>
-
                 <label className="mb-2 block text-sm font-medium">
                   Start Time
                 </label>
@@ -1046,11 +991,9 @@ export default function ActivityPlanner() {
                   }
                   className="w-full rounded-lg border bg-background px-3 py-2 text-sm"
                 />
-
               </div>
 
               <div>
-
                 <label className="mb-2 block text-sm font-medium">
                   End Time
                 </label>
@@ -1066,11 +1009,9 @@ export default function ActivityPlanner() {
                   }
                   className="w-full rounded-lg border bg-background px-3 py-2 text-sm"
                 />
-
               </div>
 
               <div>
-
                 <label className="mb-2 block text-sm font-medium">
                   Venue
                 </label>
@@ -1086,11 +1027,9 @@ export default function ActivityPlanner() {
                   placeholder="e.g. Seminar Hall"
                   className="w-full rounded-lg border bg-background px-3 py-2 text-sm"
                 />
-
               </div>
 
               <div>
-
                 <label className="mb-2 block text-sm font-medium">
                   Status
                 </label>
@@ -1105,7 +1044,6 @@ export default function ActivityPlanner() {
                   }
                   className="w-full rounded-lg border bg-background px-3 py-2 text-sm"
                 >
-
                   <option value="planned">
                     Planned
                   </option>
@@ -1121,15 +1059,11 @@ export default function ActivityPlanner() {
                   <option value="cancelled">
                     Cancelled
                   </option>
-
                 </select>
-
               </div>
-
             </div>
 
             <div>
-
               <label className="mb-2 block text-sm font-medium">
                 Description
               </label>
@@ -1148,11 +1082,9 @@ export default function ActivityPlanner() {
                 rows={3}
                 className="w-full rounded-lg border bg-background px-3 py-2 text-sm"
               />
-
             </div>
 
             <div className="flex justify-end gap-3">
-
               <Button
                 type="button"
                 variant="outline"
@@ -1171,22 +1103,16 @@ export default function ActivityPlanner() {
                     ? "Update Activity"
                     : "Save Activity"}
               </Button>
-
             </div>
-
           </form>
-
         </Card>
       )}
 
       {/* Activities */}
 
       <div>
-
         <div className="mb-4 flex items-center justify-between">
-
           <div>
-
             <h2 className="text-lg font-semibold">
               Planned Activities
             </h2>
@@ -1197,7 +1123,6 @@ export default function ActivityPlanner() {
                 {selectedFacultyName}
               </p>
             )}
-
           </div>
 
           <span className="text-sm text-muted-foreground">
@@ -1206,7 +1131,6 @@ export default function ActivityPlanner() {
               ? "activity"
               : "activities"}
           </span>
-
         </div>
 
         {loading ? (
@@ -1215,7 +1139,6 @@ export default function ActivityPlanner() {
           </Card>
         ) : activities.length === 0 ? (
           <Card className="p-8 text-center">
-
             <CalendarDays
               size={32}
               className="mx-auto mb-3 text-muted-foreground"
@@ -1228,24 +1151,18 @@ export default function ActivityPlanner() {
             <p className="mt-1 text-sm text-muted-foreground">
               Select a faculty member and add an activity.
             </p>
-
           </Card>
         ) : (
           <div className="space-y-3">
-
             {activities.map(
               (activity) => (
                 <Card
                   key={activity.id}
                   className="p-5"
                 >
-
                   <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
-
                     <div className="min-w-0 flex-1">
-
                       <div className="flex flex-wrap items-center gap-2">
-
                         <h3 className="font-semibold">
                           {activity.title}
                         </h3>
@@ -1261,7 +1178,6 @@ export default function ActivityPlanner() {
                             activity.status
                           }
                         </span>
-
                       </div>
 
                       {activity.description && (
@@ -1273,9 +1189,7 @@ export default function ActivityPlanner() {
                       )}
 
                       <div className="mt-4 grid gap-2 text-sm text-muted-foreground sm:grid-cols-2">
-
                         <div className="flex items-center gap-2">
-
                           <User size={15} />
 
                           <span>
@@ -1283,17 +1197,14 @@ export default function ActivityPlanner() {
                               ?.name ??
                               "Unassigned"}
                           </span>
-
                         </div>
 
                         <div className="flex items-center gap-2">
-
                           <CalendarDays
                             size={15}
                           />
 
                           <span>
-
                             {formatDate(
                               activity.start_date
                             )}
@@ -1302,34 +1213,27 @@ export default function ActivityPlanner() {
                               ` – ${formatDate(
                                 activity.end_date
                               )}`}
-
                           </span>
-
                         </div>
 
                         {(activity.start_time ||
                           activity.end_time) && (
                           <div className="flex items-center gap-2">
-
                             <Clock size={15} />
 
                             <span>
-
                               {
                                 activity.start_time
                               }
 
                               {activity.end_time &&
                                 ` – ${activity.end_time}`}
-
                             </span>
-
                           </div>
                         )}
 
                         {activity.venue && (
                           <div className="flex items-center gap-2">
-
                             <MapPin size={15} />
 
                             <span>
@@ -1337,16 +1241,12 @@ export default function ActivityPlanner() {
                                 activity.venue
                               }
                             </span>
-
                           </div>
                         )}
-
                       </div>
-
                     </div>
 
                     <div className="flex shrink-0 gap-1">
-
                       <Button
                         variant="ghost"
                         size="icon"
@@ -1357,9 +1257,7 @@ export default function ActivityPlanner() {
                         }
                         title="Edit activity"
                       >
-                        <Pencil
-                          size={17}
-                        />
+                        <Pencil size={17} />
                       </Button>
 
                       <Button
@@ -1373,24 +1271,16 @@ export default function ActivityPlanner() {
                         className="text-destructive hover:text-destructive"
                         title="Delete activity"
                       >
-                        <Trash2
-                          size={17}
-                        />
+                        <Trash2 size={17} />
                       </Button>
-
                     </div>
-
                   </div>
-
                 </Card>
               )
             )}
-
           </div>
         )}
-
       </div>
-
     </div>
   );
 }

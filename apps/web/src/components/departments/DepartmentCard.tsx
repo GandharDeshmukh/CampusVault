@@ -3,13 +3,14 @@ import { ChevronRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 interface DepartmentCardProps {
+  id: string;
   name: string;
   shortName: string;
   icon: React.ReactNode;
   color: string;
+  faculty: number;
   documents: number;
   achievements: number;
-  activities: number;
 }
 
 const slugMap: Record<string, string> = {
@@ -21,20 +22,23 @@ const slugMap: Record<string, string> = {
 };
 
 export default function DepartmentCard({
+  id,
   name,
   shortName,
   icon,
   color,
+  faculty,
   documents,
   achievements,
-  activities,
 }: DepartmentCardProps) {
   const navigate = useNavigate();
 
   function handleClick() {
     const slug =
       slugMap[shortName] ??
-      shortName.toLowerCase().replace(/[^a-z0-9]/g, "");
+      shortName
+        .toLowerCase()
+        .replace(/[^a-z0-9]/g, "");
 
     navigate(`/department/${slug}`);
   }
@@ -42,72 +46,79 @@ export default function DepartmentCard({
   return (
     <Card
       onClick={handleClick}
-      className="group cursor-pointer overflow-hidden rounded-3xl border-0 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+      className="group cursor-pointer overflow-hidden rounded-2xl border bg-card shadow-sm transition-colors hover:bg-muted/20"
     >
       <div
-        className="h-2"
-        style={{ backgroundColor: color }}
+        className="h-1"
+        style={{
+          backgroundColor: color,
+        }}
       />
 
       <div className="p-6">
-        <div className="mb-5 flex items-center gap-4">
+        <div className="flex items-start gap-4">
           <div
-            className="flex h-14 w-14 items-center justify-center rounded-2xl text-2xl"
+            className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl"
             style={{
-              backgroundColor: `${color}20`,
-              color: color,
+              backgroundColor: `${color}15`,
+              color,
             }}
           >
             {icon}
           </div>
 
-          <div>
-            <h2 className="text-xl font-bold">
+          <div className="min-w-0">
+            <p className="text-sm font-semibold text-muted-foreground">
               {shortName}
-            </h2>
-
-            <p className="text-muted-foreground">
-              {name}
             </p>
+
+            <h2 className="mt-1 text-lg font-semibold leading-tight">
+              {name}
+            </h2>
           </div>
         </div>
 
-        <div className="mb-6 grid grid-cols-3 gap-4 text-center">
-          <div>
-            <p className="text-2xl font-bold">
+        <div className="mt-6 grid grid-cols-3 divide-x rounded-xl border bg-muted/20">
+          <div className="px-3 py-4 text-center">
+            <p className="text-xl font-semibold">
+              {faculty}
+            </p>
+
+            <p className="mt-1 text-xs text-muted-foreground">
+              Faculty
+            </p>
+          </div>
+
+          <div className="px-3 py-4 text-center">
+            <p className="text-xl font-semibold">
               {documents}
             </p>
 
-            <p className="text-xs text-muted-foreground">
+            <p className="mt-1 text-xs text-muted-foreground">
               Documents
             </p>
           </div>
 
-          <div>
-            <p className="text-2xl font-bold">
+          <div className="px-3 py-4 text-center">
+            <p className="text-xl font-semibold">
               {achievements}
             </p>
 
-            <p className="text-xs text-muted-foreground">
+            <p className="mt-1 text-xs text-muted-foreground">
               Achievements
-            </p>
-          </div>
-
-          <div>
-            <p className="text-2xl font-bold">
-              {activities}
-            </p>
-
-            <p className="text-xs text-muted-foreground">
-              Activities
             </p>
           </div>
         </div>
 
-        <div className="flex items-center justify-end font-medium text-primary">
-          View Department
+        <div className="mt-5 flex items-center justify-between text-sm font-medium">
+          <span className="text-muted-foreground">
+            Department overview
+          </span>
 
-          <ChevronRight className="ml-1 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+          <span className="flex items-center text-primary">
+            View
+            <ChevronRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+          </span>
         </div>
       </div>
     </Card>
